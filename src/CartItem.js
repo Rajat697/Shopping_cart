@@ -34,12 +34,13 @@ class CartItem extends React.Component {            // we need to give it one me
         
         this.setState((prevState) =>{
             if(prevState.qty>0){
-            return{
-                qty: prevState.qty-1
+                return{
+                 qty: prevState.qty-1
                 }
             }
         });
     }
+    
     render(){
         const {price, title,qty} = this.state;              // getting these properties from this object
         return (
@@ -57,7 +58,7 @@ class CartItem extends React.Component {            // we need to give it one me
                     onClick={this.increaseQuantity}/>
                     <img alt="decrease" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992683.png" 
                     onClick={this.decreaseQuantity} />
-                    <img alt="delete" className="action-icons" src="https://cdn-icons.flaticon.com/png/512/3102/premium/3102186.png?token=exp=1648033533~hmac=23a469bb99af9ed5c92e65a4fd3b35db" />
+                    <img alt="delete" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png" />
 
                 </div>
             </div>
