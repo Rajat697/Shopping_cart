@@ -4,15 +4,15 @@ import React from "react";
 // inherting class called componenet inside the  react package
 class CartItem extends React.Component {            // we need to give it one method
 
-    constructor(){
-        super();
-        this.state={
-            price: 999,
-            title : 'Phone',
-            qty: 1,
-            img:''
-        }
-    }
+    // constructor(){
+    //     super();
+    //     this.state={
+    //         price: 999,
+    //         title : 'Phone',
+    //         qty: 0,
+    //         img:''
+    //     }
+    // }
     increaseQuantity=() =>{
         // console.log('this', this.state)
 
@@ -42,7 +42,8 @@ class CartItem extends React.Component {            // we need to give it one me
     }
     
     render(){
-        const {price, title,qty} = this.state;              // getting these properties from this object
+        console.log('this.props' ,this.props)
+        const {price, title,qty} = this.props.product;              // getting these properties from this object
         return (
             <div className="cart-item">
                 <div className="left-block">
