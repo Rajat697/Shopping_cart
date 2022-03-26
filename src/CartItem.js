@@ -44,6 +44,7 @@ class CartItem extends React.Component {            // we need to give it one me
     render(){
         console.log('this.props' ,this.props)
         const {price, title,qty} = this.props.product;              // getting these properties from this object
+        const{product, onIncreaseQuantity, onDecreaseQuantity,onDeleteProduct} = this.props; // By Destructuring
         return (
             <div className="cart-item">
                 <div className="left-block">
@@ -56,10 +57,12 @@ class CartItem extends React.Component {            // we need to give it one me
                     <div style={{color: '#777',fontSize:25}}>Qty: {qty}</div>
                     <div className="cart-item-actions"></div>
                     <img alt="increase" className="action-icons" src="https://as1.ftcdn.net/v2/jpg/02/51/03/82/1000_F_251038282_CLb3d8tk99bGoU9ILEYS8vY215fgRmGT.jpg" 
-                    onClick={() => this.props.onIncreaseQuantity(this.props.product)}/>
+                    onClick={() => onIncreaseQuantity(product)}/>
                     <img alt="decrease" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/992/992683.png" 
-                    onClick={()=>this.props.onDecreaseQuantity(this.props.product)} />
-                    <img alt="delete" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png" />
+                    onClick={()=>onDecreaseQuantity(product)} /> {/* onCLick={()=> this.props.onDecreaseQuantity(this.props.product)} */}
+                   
+                    <img alt="delete" className="action-icons" src="https://cdn-icons-png.flaticon.com/512/1345/1345874.png" 
+                    onClick={()=>onDeleteProduct(product.id)}/>
 
                 </div>
             </div>
