@@ -49,8 +49,8 @@ class Cart extends React.Component {            // we need to give it one method
     }
     handleDeleteProduct =(id)=>{
         const {products} = this.state;
-        const items = products.filter((item)=> item.id !== id);
-        this.setState({
+        const items = products.filter((item)=> item.id !== id);      // Filter()
+        this.setState({                                         // will render the updated data
             products:items
         })
 
