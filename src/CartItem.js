@@ -2,7 +2,8 @@ import React from "react";
 
 
 // inherting class called componenet inside the  react package
-class CartItem extends React.Component {            // we need to give it one method
+// class CartItem extends React.Component {            // we need to give it one method
+    const CartItem = (props) =>{
 
     // constructor(){
     //     super();
@@ -41,14 +42,14 @@ class CartItem extends React.Component {            // we need to give it one me
     //     });
     // }
     
-    render(){
-        console.log('this.props' ,this.props)
-        const {price, title,qty} = this.props.product;              // getting these properties from this object
-        const{product, onIncreaseQuantity, onDecreaseQuantity,onDeleteProduct} = this.props; // By Destructuring
+    // render(){
+       
+        const {price, title,qty} = props.product;              // getting these properties from this object
+        const{product, onIncreaseQuantity, onDecreaseQuantity,onDeleteProduct} = props; // By Destructuring
         return (
             <div className="cart-item">
                 <div className="left-block">
-                    <img style={styles.image}/>
+                    <img style={styles.image} src={product.img}/>
 
                 </div>
                 <div className="right-block">
@@ -68,7 +69,7 @@ class CartItem extends React.Component {            // we need to give it one me
             </div>
         )
     }
-} 
+
 
 const styles ={
     image:{
