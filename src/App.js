@@ -1,49 +1,99 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Cart from './Cart';
+import firebase from 'firebase/app';
 
 class App extends React.Component {
   constructor(){
     super();
     this.state={
-       products:[
-        {
-            price: 999,
-            title : 'Watch',
-            qty: 0,
-            img:'https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=694&q=80',
-            id: 1
-        },{
-            price: 999,
-            title : 'Phone',
-            qty: 0,
-            img:'https://images.unsplash.com/photo-1525598912003-663126343e1f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-            id: 2
-        },{
-            price: 999,
-            title : 'laptop',
-            qty: 0,
-            img:'https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1468&q=80',
-            id: 3
-        } 
-       ]
+       products:[],
+       loading:true
     }
+
+    this.db = firebase.firestore();
+}
+
+componentDidMount(){
+  // firebase.firestore()
+  // .collection('products')
+  // .get()
+  // .then((snapshot)=> {
+  //   console.log(snapshot);
+
+  //   snapshot.docs.map((doc)=>{
+  //     console.log((doc.data()))
+  //   });
+  //   const products = snapshot.docs.map((doc)=>{
+  //     const data = doc.data();
+  //     data['id'] = doc.id;
+  //     return data;
+  //     return doc.data();
+  //   })
+  //   this.setState({
+  //     products,
+  //     loading: false   // will not render "loading" after reloading the page
+  //   })
+  // })
+
+  //Reading the data from firbase
+  firebase.firestore()
+  .collection('products')
+  .onSnapshot((snapshot)=> {        // listner to update product details without refreshing the page
+    console.log(snapshot);
+
+    snapshot.docs.map((doc)=>{
+      console.log((doc.data()))
+    });
+    const products = snapshot.docs.map((doc)=>{
+      const data = doc.data();
+      data['id'] = doc.id;
+      return data;
+      return doc.data();
+    })
+    this.setState({
+      products,
+      loading: false   // will not render "loading" after reloading the page
+    })
+  })
 }
 handleIncreaseQuantity =(product)=>{
     const{products} = this.state;
     const index= products.indexOf(product);
-    products[index].qty +=1;
-    this.setState({
-        products
+
+    // products[index].qty +=1;
+    // this.setState({
+    //     products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);
+
+    docRef.update({
+      qty: products[index].qty +1
+    })
+    .then(()=>{
+      console.log('updated successfully')
+    })
+    .catch((error)=>{
+      console.log('Error', error);
     })
 }
 handleDecreaseQuantity =(product)=>{
     const{products} = this.state;
     const index= products.indexOf(product);
     if(product.qty>0){
-    products[index].qty -=1;
-    this.setState({
-        products
+    // products[index].qty -=1;
+    // this.setState({
+    //     products
+    // })
+    const docRef = this.db.collection('products').doc(products[index].id);
+    docRef.update({
+      qty: products[index].qty -1
+    })
+    .then(()=>{
+      console.log('updated')
+    })
+    .catch((error)=>{
+      console.log('Error'. error);
     })
 }
 }
@@ -73,7 +123,7 @@ getCartTotal = () =>{
   return cartTotal;
 }
   render(){
-    const {products} = this.state;
+    const {products , loading} = this.state;
   return (
     <div className="App">
      <Navbar count={this.getCartCount()} />
@@ -82,6 +132,7 @@ getCartTotal = () =>{
       onIncreaseQuantity={this.handleIncreaseQuantity}
       onDecreaseQuantity = {this.handleDecreaseQuantity}
       onDeleteProduct = {this.handleDeleteProduct}/>
+      {loading && <h1> Loading products...</h1>}
       <div style={{ padding: 10,fontSize: 25}}>TOTAL: {this.getCartTotal()}</div>
     </div>
     
