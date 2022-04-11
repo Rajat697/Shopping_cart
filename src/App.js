@@ -15,6 +15,7 @@ class App extends React.Component {
 }
 
 componentDidMount(){
+  //Firebase Reading data from Cart
   // firebase.firestore()
   // .collection('products')
   // .get()
@@ -37,7 +38,8 @@ componentDidMount(){
   // })
 
   //Reading the data from firbase
-  firebase.firestore()
+  // 
+  this.db
   .collection('products')
   .onSnapshot((snapshot)=> {        // listner to update product details without refreshing the page
     console.log(snapshot);
@@ -99,9 +101,18 @@ handleDecreaseQuantity =(product)=>{
 }
 handleDeleteProduct =(id)=>{
     const {products} = this.state;
-    const items = products.filter((item)=> item.id !== id);      // Filter()
-    this.setState({                                         // will render the updated data
-        products:items
+    // const items = products.filter((item)=> item.id !== id);      // Filter()
+    // this.setState({                                         // will render the updated data
+    //     products:items
+    // })
+    const docRef = this.db.collection('products').doc(id);
+    docRef
+    .delete()
+    .then(()=>{
+      console.log('Deleted')
+    })
+    .catch((error)=>{
+      console.log('Error'. error);
     })
 
 }
